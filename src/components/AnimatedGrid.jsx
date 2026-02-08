@@ -96,7 +96,7 @@ export default function AnimatedGrid({ color = '0, 0, 0' }) {
                 const pulseAlpha = Math.max(0, 1 - pulseDist / pulseWidth) * 0.15;
                 const alpha = LINE_OPACITY + pulseAlpha;
 
-                ctx.strokeStyle = `rgba(0, 0, 0, ${alpha})`;
+                ctx.strokeStyle = `rgba(${color}, ${alpha})`;
                 ctx.lineWidth = LINE_WIDTH;
                 ctx.stroke();
 

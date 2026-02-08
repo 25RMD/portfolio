@@ -13,6 +13,12 @@ export default function InvertCursor() {
         const el = cursorRef.current;
         if (!el) return;
 
+        // Hide on touch devices
+        if (!window.matchMedia('(pointer: fine)').matches) {
+            el.style.display = 'none';
+            return;
+        }
+
         let disposed = false;
         let animId = null;
         let inWindow = false;

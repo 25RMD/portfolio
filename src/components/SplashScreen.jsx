@@ -1,83 +1,86 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
+// Lenis-style lerp for smooth interpolation
+function lerp(start, end, factor) {
+    return start + (end - start) * factor;
+}
+
 export default function SplashScreen({ onComplete }) {
-    const [count, setCount] = useState(0);
+    const [displayCount, setDisplayCount] = useState(0);
+    const targetRef = useRef(0);
+    const currentRef = useRef(0);
+    const startTimeRef = useRef(null);
+    const rafRef = useRef(null);
+    const finishedRef = useRef(false);
+
+    const DURATION = 2500;
+    const LERP_FACTOR = 0.08;
+
+    const handleComplete = useCallback(() => {
+        if (!finishedRef.current) {
+            finishedRef.current = true;
+            setTimeout(onComplete, 800);
+        }
+    }, [onComplete]);
 
     useEffect(() => {
-        const duration = 2000; // 2 seconds total load time
-        const interval = 20;
-        const steps = duration / interval;
-        const increment = 100 / steps;
+        const animate = (timestamp) => {
+            if (!startTimeRef.current) startTimeRef.current = timestamp;
+            const elapsed = timestamp - startTimeRef.current;
 
-        const timer = setInterval(() => {
-            setCount((prev) => {
-                const next = prev + increment;
-                if (next >= 100) {
-                    clearInterval(timer);
-                    return 100;
-                }
-                return next;
-            });
-        }, interval);
+            targetRef.current = Math.min((elapsed / DURATION) * 100, 100);
+            currentRef.current = lerp(currentRef.current, targetRef.current, LERP_FACTOR);
 
-        const timeout = setTimeout(() => {
-            onComplete();
-        }, duration + 500); // minimal delay after 100%
+            if (targetRef.current >= 100 && currentRef.current > 99.5) {
+                currentRef.current = 100;
+            }
+
+            const rounded = Math.round(currentRef.current);
+            setDisplayCount(rounded);
+
+            if (rounded >= 100) {
+                setTimeout(handleComplete, 400);
+                return;
+            }
+
+            rafRef.current = requestAnimationFrame(animate);
+        };
+
+        rafRef.current = requestAnimationFrame(animate);
 
         return () => {
-            clearInterval(timer);
-            clearTimeout(timeout);
+            if (rafRef.current) cancelAnimationFrame(rafRef.current);
         };
-    }, [onComplete]);
+    }, [handleComplete]);
 
     return (
         <motion.div
-            className="fixed inset-0 z-9999 bg-black text-white flex flex-col items-center justify-center overflow-hidden"
-            initial={{ y: 0 }}
-            data-cursor-invert
+            className="fixed inset-0 z-9999 bg-black text-white flex items-center justify-center overflow-hidden"
+            initial={{ opacity: 1 }}
             exit={{ 
                 y: '-100%',
-                transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 }
+                transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
             }}
+            data-cursor-invert
         >
-            <motion.div 
-                className="flex flex-col items-center justify-center w-full relative"
-                initial={{ opacity: 1 }}
-                exit={{ 
-                    opacity: 0,
-                    y: -100,
-                    transition: { duration: 0.4, ease: "easeInOut" }
-                }}
-            >
-                <div className="relative">
-                    {/* Large Percentage */}
-                    <span className="font-syne text-[15vw] md:text-[12vw] font-bold leading-none tracking-tighter">
-                        {Math.round(count)}
-                    </span>
-                    <span className="font-syne text-4xl md:text-6xl align-top absolute -right-8 md:-right-12 top-2 md:top-4">%</span>
-                </div>
-
-                {/* Loading Status Text */}
-                <div className="mt-8 overflow-hidden h-8 flex items-center">
-                    <motion.p 
-                        className="font-space text-sm md:text-base uppercase tracking-widest opacity-60"
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 0.6 }}
-                        transition={{ delay: 0.2 }}
-                    >
-                        Loading Experience
-                    </motion.p>
-                </div>
-            </motion.div>
-            
-            {/* Progress Bar Line */}
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-white/10">
-                <motion.div 
-                    className="h-full bg-white"
-                    style={{ width: `${count}%` }}
-                    exit={{ opacity: 0 }}
-                />
+            <div className="overflow-hidden flex items-baseline">
+                <motion.span 
+                    className="font-syne text-[20vw] md:text-[15vw] font-extrabold leading-none tracking-tighter"
+                    initial={{ y: "100%" }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                >
+                    {displayCount.toString().padStart(2, '0')}
+                </motion.span>
+                <motion.span 
+                    className="font-syne text-4xl md:text-6xl font-light ml-2 opacity-40"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.4 }}
+                    transition={{ delay: 0.5 }}
+                >
+                    %
+                </motion.span>
             </div>
         </motion.div>
     );

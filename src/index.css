@@ -2,10 +2,15 @@
 
 @layer base {
     * {
-        cursor: none;
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+    }
+
+    @media (pointer: fine) {
+        body {
+            cursor: none;
+        }
     }
 
     html {
@@ -77,7 +82,7 @@
     transform: scaleX(1);
 }
 
-/* Scroll reveal animations (triggered by locomotive-scroll is-inview class) */
+/* Scroll reveal animations (triggered by IntersectionObserver is-inview class) */
 .reveal {
     opacity: 0;
     transform: translateY(30px);

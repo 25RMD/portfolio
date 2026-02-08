@@ -6,19 +6,21 @@ import Projects from './components/Projects'
 import Contact from './components/Contact'
 import InvertCursor from './components/InvertCursor'
 import SplashScreen from './components/SplashScreen'
-import useLocomotiveScroll, { getLocomotiveScroll } from './hooks/useLocomotiveScroll'
+import useLenis, { getLenis } from './hooks/useLocomotiveScroll'
+import useScrollReveal from './hooks/useScrollReveal'
 
 function App() {
     const [isLoading, setIsLoading] = useState(true)
-    useLocomotiveScroll()
+    useLenis()
+    useScrollReveal()
 
     useEffect(() => {
-        const scroll = getLocomotiveScroll()
-        if (scroll) {
+        const lenis = getLenis()
+        if (lenis) {
             if (isLoading) {
-                scroll.stop()
+                lenis.stop()
             } else {
-                scroll.start()
+                lenis.start()
             }
         }
     }, [isLoading])

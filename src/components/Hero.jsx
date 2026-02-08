@@ -37,6 +37,8 @@ export default function Hero({ isLoading }) {
     const animationId = useRef(null);
     const [showAltName, setShowAltName] = useState(false);
     const [showContent, setShowContent] = useState(false);
+    const showContentRef = useRef(false);
+    const isTouch = typeof window !== 'undefined' && !window.matchMedia('(pointer: fine)').matches;
 
     useEffect(() => {
         if (!isLoading) {
@@ -50,6 +52,10 @@ export default function Hero({ isLoading }) {
             return () => clearTimeout(timer);
         }
     }, [isLoading]);
+
+    useEffect(() => {
+        showContentRef.current = showContent;
+    }, [showContent]);
 
     const getSpotlightSize = useCallback(() => {
         return typeof window !== 'undefined' && window.innerWidth < 768 ? 140 : 200;
@@ -102,7 +108,7 @@ export default function Hero({ isLoading }) {
             mousePos.current = { x: e.clientX, y: e.clientY };
         };
         const handleTouchMove = (e) => {
-            e.preventDefault();
+            if (!isTouch) e.preventDefault();
             mousePos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
         };
         const handleMouseLeave = () => {
@@ -133,6 +139,12 @@ export default function Hero({ isLoading }) {
             if (cursorRef.current) {
                 cursorRef.current.style.left = cursorPos.current.x + 'px';
                 cursorRef.current.style.top = cursorPos.current.y + 'px';
+            }
+
+            if (cursorRef.current) {
+                const elements = document.elementsFromPoint(mousePos.current.x, mousePos.current.y);
+                const isInteractive = elements.some(el => el.closest('a, button, [role="button"], [data-cursor-hotspot]'));
+                cursorRef.current.style.opacity = showContentRef.current && isInteractive ? '1' : '0';
             }
 
             const dx = mousePos.current.x - prevMousePos.current.x;
@@ -296,15 +308,15 @@ export default function Hero({ isLoading }) {
                 />
             </div>
 
-            {/* Canvas for echoes */}
-            <div className="absolute inset-0 z-20 pointer-events-none">
+            {/* Canvas for echoes - hidden on touch */}
+            <div className={`absolute inset-0 z-20 pointer-events-none ${isTouch ? 'hidden' : ''}`}>
                 <canvas ref={canvasRef} className="w-full h-full" />
             </div>
 
-            {/* Spotlight Circle (reveals color image) */}
+            {/* Spotlight Circle (reveals color image) - hidden on touch */}
             <div
                 ref={spotlightRef}
-                className={`fixed w-[200px] h-[200px] rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20 overflow-hidden md:w-[200px] md:h-[200px] transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'}`}
+                className={`fixed w-[200px] h-[200px] rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20 overflow-hidden transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'} ${isTouch ? 'hidden' : ''}`}
                 style={{ width: '200px', height: '200px', background: '#fff' }}
             >
                 <img
@@ -322,14 +334,14 @@ export default function Hero({ isLoading }) {
                 <div className="absolute top-8 left-8 md:top-12 md:left-12 z-20 pointer-events-auto">
                     <div className="relative">
                         <h1
-                            className={`font-syne text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.85] transition-opacity duration-1000 ease-in-out ${showAltName ? 'opacity-0' : 'opacity-100'}`}
+                            className={`font-syne text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.85] transition-opacity duration-1000 ease-in-out ${showAltName ? 'opacity-0' : 'opacity-100'}`}
                             style={{ color: '#111' }}
                         >
                             <span className="block">DANIEL</span>
                             <span className="block mt-1">UTHO</span>
                         </h1>
                         <h1
-                            className={`font-cursive text-6xl md:text-8xl lg:text-9xl tracking-normal leading-[0.85] absolute inset-0 transition-opacity duration-1000 ease-in-out ${showAltName ? 'opacity-100' : 'opacity-0'}`}
+                            className={`font-cursive text-5xl sm:text-6xl md:text-8xl lg:text-9xl tracking-normal leading-[0.85] absolute inset-0 transition-opacity duration-1000 ease-in-out ${showAltName ? 'opacity-100' : 'opacity-0'}`}
                             style={{ color: '#111' }}
                         >
                             <span className="block pt-2">25RMD</span>
@@ -338,8 +350,9 @@ export default function Hero({ isLoading }) {
                 </div>
 
                 {/* Navigation - Top Right */}
-                <div className="absolute top-8 right-8 md:top-12 md:right-12 z-20 pointer-events-auto flex items-center gap-8 md:gap-12">
+                <div className="absolute top-8 right-8 md:top-12 md:right-12 z-20 pointer-events-auto flex items-center gap-4 sm:gap-8 md:gap-12">
                     <button
+                        data-cursor-hotspot
                         onClick={() => {
                             history.replaceState(null, '', window.location.pathname);
                             document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
@@ -350,6 +363,7 @@ export default function Hero({ isLoading }) {
                         ABOUT
                     </button>
                     <button
+                        data-cursor-hotspot
                         onClick={() => {
                             history.replaceState(null, '', window.location.pathname);
                             document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
@@ -360,6 +374,7 @@ export default function Hero({ isLoading }) {
                         PROJECTS
                     </button>
                     <button
+                        data-cursor-hotspot
                         onClick={() => {
                             history.replaceState(null, '', window.location.pathname);
                             document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
@@ -375,10 +390,11 @@ export default function Hero({ isLoading }) {
                 <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12 z-20 flex items-center gap-5 md:gap-6 pointer-events-auto">
                     {/* X (Twitter) */}
                     <a
+                        data-cursor-hotspot
                         href="https://x.com/r25aum"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="transition-all duration-200 hover:scale-110"
+                        className="transition-all duration-200 hover:scale-110 cursor-pointer"
                         style={{ color: '#111' }}
                         aria-label="X"
                     >
@@ -388,10 +404,11 @@ export default function Hero({ isLoading }) {
                     </a>
                     {/* Instagram */}
                     <a
+                        data-cursor-hotspot
                         href="https://instagram.com/r25aum"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="transition-all duration-200 hover:scale-110"
+                        className="transition-all duration-200 hover:scale-110 cursor-pointer"
                         style={{ color: '#111' }}
                         aria-label="Instagram"
                     >
@@ -401,10 +418,11 @@ export default function Hero({ isLoading }) {
                     </a>
                     {/* GitHub */}
                     <a
+                        data-cursor-hotspot
                         href="https://github.com/25rmd"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="transition-all duration-200 hover:scale-110"
+                        className="transition-all duration-200 hover:scale-110 cursor-pointer"
                         style={{ color: '#111' }}
                         aria-label="GitHub"
                     >
@@ -425,10 +443,10 @@ export default function Hero({ isLoading }) {
                 </div>
             </div>
 
-            {/* Text Mask Layer (white text revealed inside spotlight circle) */}
+            {/* Text Mask Layer (white text revealed inside spotlight circle) - hidden on touch */}
             <div
                 ref={textMaskRef}
-                className={`fixed rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none z-40 overflow-hidden transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'}`}
+                className={`fixed rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none z-40 overflow-hidden transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'} ${isTouch ? 'hidden' : ''}`}
                 style={{ width: '200px', height: '200px' }}
             >
                 <div
@@ -456,7 +474,7 @@ export default function Hero({ isLoading }) {
                     </div>
 
                     {/* Navigation - Top Right */}
-                    <div className="absolute top-8 right-8 md:top-12 md:right-12 flex items-center gap-8 md:gap-12">
+                    <div className="absolute top-8 right-8 md:top-12 md:right-12 flex items-center gap-4 sm:gap-8 md:gap-12">
                         <span
                             className="font-space text-xs md:text-sm font-bold tracking-[0.2em]"
                             style={{ color: '#fff' }}
@@ -481,6 +499,7 @@ export default function Hero({ isLoading }) {
                     <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12 flex items-center gap-5 md:gap-6" style={{ color: '#fff' }}>
                         {/* X (Twitter) */}
                         <a
+                            data-cursor-hotspot
                             href="https://x.com/r25aum"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -494,6 +513,7 @@ export default function Hero({ isLoading }) {
                         </a>
                         {/* Instagram */}
                         <a
+                            data-cursor-hotspot
                             href="https://instagram.com/r25aum"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -507,6 +527,7 @@ export default function Hero({ isLoading }) {
                         </a>
                         {/* GitHub */}
                         <a
+                            data-cursor-hotspot
                             href="https://github.com/25rmd"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -532,10 +553,10 @@ export default function Hero({ isLoading }) {
                 </div>
             </div>
 
-            {/* Custom Cursor */}
+            {/* Custom Cursor - hidden on touch */}
             <div
                 ref={cursorRef}
-                className="fixed w-5 h-5 rounded-full border-2 border-black -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[100] mix-blend-difference transition-[width,height,border-color] duration-300"
+                className={`fixed w-5 h-5 rounded-full border-2 border-black -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[100] mix-blend-difference transition-[width,height,border-color] duration-300 ${isTouch ? 'hidden' : ''}`}
             />
         </div>
     );

@@ -12,7 +12,6 @@ export default function ProjectGrid({ projects, onProjectClick }) {
                     onMouseEnter={() => setHoveredIndex(index)}
                     onMouseLeave={() => setHoveredIndex(null)}
                     className={`group relative text-left bg-transparent border-none p-0 cursor-pointer w-full reveal reveal-delay-${(index % 3) + 1}`}
-                    data-scroll
                 >
                     {/* Image Container */}
                     <div className="relative w-full aspect-4/5 overflow-hidden rounded-sm bg-white/5 mb-5">

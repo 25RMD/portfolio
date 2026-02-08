@@ -6,7 +6,7 @@ import ProjectGrid from './ProjectGrid';
 const PROJECTS = [
   {
     title: 'Black Lotus',
-    role: 'Software Developer',
+    role: 'Frontend Developer',
     year: '2025',
     description: 'Black Lotus is a premier web and software development agency delivering high-quality digital solutions. I contributed to building their corporate identity and client projects, ensuring robust and scalable applications.',
     link: 'https://blacklotusdev.org',
@@ -16,13 +16,14 @@ const PROJECTS = [
   },
   {
     title: 'EE Wellness',
-    role: 'Full Stack Developer',
+    role: 'Frontend Developer',
     year: '2025',
     description: 'EE Wellness is a wellness center located in Lagos dedicated to holistic health. I developed both their responsive website and mobile application, creating a seamless booking and information platform for clients.',
     link: 'https://eewellnesshub.com',
     tags: ['Company', 'Website', 'Mobile App'],
     image: '/images/projects/eewellness.jpg',
     websiteImage: '/images/project-details/eewellness.png',
+    appImage: ['/images/project-details/mobile/eewellness1.jpg', '/images/project-details/mobile/eewellness2.jpg'],
   },
   {
     title: 'Tomsu Foundation',
@@ -36,17 +37,18 @@ const PROJECTS = [
   },
   {
     title: 'Tracklearn',
-    role: 'Lead Developer',
+    role: 'Frontend Developer',
     year: '2026',
     description: 'Tracklearn is an education tool built to help school managements ensure quality of lessons being taught. It also features AI-aided learning for students. I spearheaded the development of both the web dashboard and the mobile learning app.',
     link: 'https://tracklearn.org',
     tags: ['EdTech', 'Website', 'Mobile App'],
     image: '/images/projects/tracklearn.jpg',
     websiteImage: '/images/project-details/tracklearn.png',
+    appImage: '/images/project-details/mobile/tracklearnmobile.jpg',
   },
   {
     title: 'Precog',
-    role: 'Solo Developer',
+    role: 'Full Stack Developer',
     year: '2025',
     description: 'Precog is an advanced scam detection system for Solana memecoins. It analyzes on-chain data to identify potential risks, helping traders make safer investment decisions in the volatile crypto market.',
     link: 'https://precog.trade',
@@ -56,7 +58,7 @@ const PROJECTS = [
   },
   {
     title: 'Platz',
-    role: 'Solo Developer',
+    role: 'Full Stack Developer',
     year: '2025',
     description: 'Platz is a platform for tokenizing land into multiple tokens that can be traded over the Ethereum blockchain. It aims to democratize real estate investment by allowing fractional ownership via smart contracts.',
     link: 'https://platz-landtokenization.vercel.app',
@@ -79,22 +81,17 @@ export default function Projects() {
     <>
       <section
         id="projects"
-        data-scroll-section
         data-cursor-invert
-        className="relative w-full min-h-screen bg-black text-white z-10 py-24 px-8 md:px-12 overflow-x-clip"
+        className="relative w-full min-h-screen bg-black text-white z-10 py-12 md:py-24 px-6 md:px-12 overflow-x-clip"
       >
         {/* Decorative Background Elements */}
         <div 
           className="absolute top-1/4 -right-32 w-[500px] h-[500px] rounded-full border border-white/20 pointer-events-none"
           style={{ animation: 'spin-slow 60s linear infinite' }}
-          data-scroll
-          data-scroll-speed="-0.5"
         />
         <div 
           className="absolute top-1/3 left-10 w-6 h-6 opacity-50 pointer-events-none"
           style={{ animation: 'spin-reverse-slow 15s linear infinite' }}
-          data-scroll
-          data-scroll-speed="0.2"
         >
              <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white -translate-y-1/2" />
              <div className="absolute top-0 left-1/2 w-0.5 h-full bg-white -translate-x-1/2" />
@@ -105,26 +102,22 @@ export default function Projects() {
         />
 
         {/* Section Header */}
-        <div className="max-w-7xl mx-auto w-full flex flex-col gap-16 relative z-10">
+        <div className="max-w-7xl mx-auto w-full flex flex-col gap-10 md:gap-16 relative z-10">
           <div className="flex flex-col gap-6">
             <h2
               className="font-syne text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.9] uppercase transition-transform duration-500 hover:skew-x-6 origin-left inline-block"
-              data-scroll
-              data-scroll-speed="1"
             >
               My Works
             </h2>
             <p
               className="font-space text-base md:text-lg text-white/60 max-w-2xl leading-relaxed"
-              data-scroll
-              data-scroll-speed="0.5"
             >
               A curated selection of projects I've built — from web platforms and mobile apps to blockchain tools and AI-powered systems.
             </p>
           </div>
 
           {/* Divider */}
-          <div className="w-full h-px bg-white/10 reveal-line" data-scroll />
+          <div className="w-full h-px bg-white/10 reveal-line" />
 
           {/* Project Grid */}
           <ProjectGrid

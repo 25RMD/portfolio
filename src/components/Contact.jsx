@@ -25,9 +25,8 @@ export default function Contact() {
     return (
         <section
             id="contact"
-            data-scroll-section
             data-cursor-invert
-            className="relative w-full min-h-screen bg-black text-white z-10 pt-24 pb-12 px-8 md:px-12 overflow-x-clip"
+            className="relative w-full min-h-screen bg-black text-white z-10 pt-12 md:pt-24 pb-12 px-6 md:px-12 overflow-x-clip"
         >
             {/* Background Animations */}
             <div className="absolute inset-0 z-0 opacity-40">
@@ -38,35 +37,30 @@ export default function Contact() {
             <div 
                 className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full border border-dashed border-white/20 pointer-events-none"
                 style={{ animation: 'spin-slow 50s linear infinite' }}
-                data-scroll
-                data-scroll-speed="-0.3"
             />
             <div 
                 className="absolute bottom-20 right-10 pointer-events-none"
                 style={{ animation: 'float 7s ease-in-out infinite' }}
-                data-scroll
-                data-scroll-speed="0.4"
             >
                 <div className="w-32 h-32 border border-white/20 rotate-12" />
             </div>
 
-            <div className="max-w-7xl mx-auto w-full flex flex-col gap-16 relative z-10">
+            <div className="max-w-7xl mx-auto w-full flex flex-col gap-10 md:gap-16 relative z-10">
                 {/* Section Header */}
                 <div className="flex items-end justify-between gap-8">
                     <h2
                         className="font-syne text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.9] uppercase reveal transition-transform duration-500 hover:skew-x-6 origin-left inline-block"
-                        data-scroll
                     >
                         Let's Create
                     </h2>
                 </div>
 
-                <div className="w-full h-px bg-white/10 reveal-line" data-scroll />
+                <div className="w-full h-px bg-white/10 reveal-line" />
 
                 {/* Content */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-start">
                     {/* Left - Description + Email */}
-                    <div className="flex flex-col gap-8 reveal reveal-delay-1" data-scroll>
+                    <div className="flex flex-col gap-8 reveal reveal-delay-1">
                         <p className="font-space text-lg md:text-xl leading-relaxed opacity-70">
                             Have a project in mind? Let's build something extraordinary together.
                             I'm currently available for freelance work and collaborations.
@@ -75,7 +69,7 @@ export default function Contact() {
                             <p className="font-space text-xs font-bold tracking-widest opacity-40">DIRECT EMAIL</p>
                             <a
                                 href="mailto:19thdanielutho@gmail.com"
-                                className="font-syne text-2xl md:text-3xl font-bold hover:opacity-70 transition-opacity"
+                                className="font-syne text-lg sm:text-2xl md:text-3xl font-bold hover:opacity-70 transition-opacity break-all sm:break-normal"
                             >
                                 19thdanielutho@gmail.com
                             </a>
@@ -83,7 +77,7 @@ export default function Contact() {
                     </div>
 
                     {/* Right - Form */}
-                    <div className="reveal reveal-delay-2" data-scroll>
+                    <div className="reveal reveal-delay-2">
                         <form onSubmit={handleSubmit} className="flex flex-col gap-12">
                             <div className="group relative">
                                 <input
