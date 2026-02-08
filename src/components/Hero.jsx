@@ -272,7 +272,7 @@ export default function Hero({ isLoading }) {
             ref={containerRef}
             id="hero-container"
             data-cursor-block
-            className="fixed inset-0 w-full h-full overflow-hidden bg-white"
+            className="fixed inset-0 w-full h-full overflow-hidden bg-white z-0"
         >
             {/* Base Image Layer (Grayscale) */}
             <div className="absolute inset-x-0 bottom-0 flex justify-center z-0 overflow-hidden">
@@ -561,7 +561,7 @@ export default function Hero({ isLoading }) {
                     </div>
 
                     {/* Navigation - Top Right */}
-                    <div className="absolute top-8 right-8 md:top-12 md:right-12 flex items-center gap-4 sm:gap-8 md:gap-12">
+                    <div className="absolute top-8 right-8 md:top-12 md:right-12 hidden md:flex items-center gap-4 sm:gap-8 md:gap-12">
                         <span
                             className="font-space text-xs md:text-sm font-bold tracking-[0.2em]"
                             style={{ color: '#fff' }}

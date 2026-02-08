@@ -52,20 +52,6 @@ export default function Contact() {
                 <AnimatedGrid color="255, 255, 255" />
             </div>
 
-            {/* Decorative Elements */}
-            <div 
-                data-parallax="0.06"
-                className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full border border-dashed border-white/20 pointer-events-none"
-                style={{ animation: 'spin-slow 50s linear infinite' }}
-            />
-            <div 
-                data-parallax="-0.12"
-                className="absolute bottom-20 right-10 pointer-events-none"
-                style={{ animation: 'float 7s ease-in-out infinite' }}
-            >
-                <div className="w-32 h-32 border border-white/20 rotate-12" />
-            </div>
-
             <div className="max-w-7xl mx-auto w-full flex flex-col gap-10 md:gap-16 relative z-10">
                 {/* Section Header */}
                 <div className="flex items-end justify-between gap-8">
