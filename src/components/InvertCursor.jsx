@@ -23,6 +23,8 @@ export default function InvertCursor() {
         let animId = null;
         let inWindow = false;
         let overDark = false;
+        let currentLabel = '';
+        const labelEl = el.querySelector('.cursor-label');
 
         const mouse = { x: 0, y: 0 };
         const pos = { x: 0, y: 0 };
@@ -32,15 +34,19 @@ export default function InvertCursor() {
 
         const isOverDarkSection = () => {
             const stack = document.elementsFromPoint(mouse.x, mouse.y);
-            if (!stack || stack.length === 0) return false;
+            if (!stack || stack.length === 0) return { dark: false, label: '' };
+
+            let label = '';
 
             for (const node of stack) {
-                if (node === el) continue;
-                if (node?.closest?.('[data-cursor-block]')) return false;
-                if (node?.closest?.('[data-cursor-invert]')) return true;
+                if (node === el || node.closest?.('.cursor-label')) continue;
+                if (node?.closest?.('[data-cursor-block]')) return { dark: false, label: '' };
+                const labelNode = node?.closest?.('[data-cursor-label]');
+                if (labelNode && !label) label = labelNode.dataset.cursorLabel;
+                if (node?.closest?.('[data-cursor-invert]')) return { dark: true, label };
             }
 
-            return false;
+            return { dark: false, label };
         };
 
         const onMouseMove = (e) => {
@@ -75,10 +81,20 @@ export default function InvertCursor() {
 
             if (!inWindow) return;
 
-            const shouldShow = isOverDarkSection();
+            const { dark: shouldShow, label } = isOverDarkSection();
             if (shouldShow !== overDark) {
                 overDark = shouldShow;
                 el.style.opacity = shouldShow ? '1' : '0';
+            }
+
+            if (label !== currentLabel) {
+                currentLabel = label;
+                if (labelEl) {
+                    labelEl.textContent = label;
+                    labelEl.style.opacity = label ? '1' : '0';
+                    el.style.width = label ? '100px' : BASE_SIZE + 'px';
+                    el.style.height = label ? '100px' : BASE_SIZE + 'px';
+                }
             }
 
             pos.x += (mouse.x - pos.x) * LERP;
@@ -122,7 +138,27 @@ export default function InvertCursor() {
                 pointerEvents: 'none',
                 zIndex: 99999,
                 willChange: 'transform, left, top',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'width 0.3s cubic-bezier(0.22,1,0.36,1), height 0.3s cubic-bezier(0.22,1,0.36,1)',
             }}
-        />
+        >
+            <span
+                className="cursor-label"
+                style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    letterSpacing: '0.15em',
+                    textTransform: 'uppercase',
+                    color: '#000',
+                    opacity: 0,
+                    transition: 'opacity 0.3s ease',
+                    pointerEvents: 'none',
+                    userSelect: 'none',
+                }}
+            />
+        </div>
     );
 }

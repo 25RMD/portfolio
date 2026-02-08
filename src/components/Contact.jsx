@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import AnimatedGrid from './AnimatedGrid';
+import SplitText from './SplitText';
 
 export default function Contact() {
     const [formData, setFormData] = useState({
@@ -7,9 +8,27 @@ export default function Contact() {
         email: '',
         message: ''
     });
+    const [errors, setErrors] = useState({});
+    const [submitted, setSubmitted] = useState(false);
+    const formRef = useRef(null);
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        const newErrors = {};
+        if (!formData.name.trim()) newErrors.name = true;
+        if (!formData.email.trim()) newErrors.email = true;
+        if (!formData.message.trim()) newErrors.message = true;
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            setTimeout(() => setErrors({}), 600);
+            return;
+        }
+
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 1000);
+
         const subject = `Project Inquiry from ${formData.name}`;
         const body = `Name: ${formData.name}%0D%0AEmail: ${formData.email}%0D%0A%0D%0A${formData.message}`;
         window.location.href = `mailto:19thdanielutho@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
@@ -35,10 +54,12 @@ export default function Contact() {
 
             {/* Decorative Elements */}
             <div 
+                data-parallax="0.06"
                 className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full border border-dashed border-white/20 pointer-events-none"
                 style={{ animation: 'spin-slow 50s linear infinite' }}
             />
             <div 
+                data-parallax="-0.12"
                 className="absolute bottom-20 right-10 pointer-events-none"
                 style={{ animation: 'float 7s ease-in-out infinite' }}
             >
@@ -49,9 +70,9 @@ export default function Contact() {
                 {/* Section Header */}
                 <div className="flex items-end justify-between gap-8">
                     <h2
-                        className="font-syne text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.9] uppercase reveal transition-transform duration-500 hover:skew-x-6 origin-left inline-block"
+                        className="font-syne text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.9] uppercase transition-transform duration-500 hover:skew-x-6 origin-left inline-block overflow-hidden"
                     >
-                        Let's Create
+                        <SplitText>Let's Create</SplitText>
                     </h2>
                 </div>
 
@@ -78,8 +99,8 @@ export default function Contact() {
 
                     {/* Right - Form */}
                     <div className="reveal reveal-delay-2">
-                        <form onSubmit={handleSubmit} className="flex flex-col gap-12">
-                            <div className="group relative">
+                        <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-12">
+                            <div className={`group relative ${errors.name ? 'shake' : ''}`}>
                                 <input
                                     type="text"
                                     id="name"
@@ -87,7 +108,7 @@ export default function Contact() {
                                     required
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className="peer w-full bg-transparent py-4 border-b border-white/20 font-space text-lg focus:outline-none focus:border-white transition-colors placeholder-transparent"
+                                    className={`peer w-full bg-transparent py-4 border-b font-space text-lg focus:outline-none transition-colors placeholder-transparent ${errors.name ? 'border-red-400' : 'border-white/20 focus:border-white'}`}
                                     placeholder="Name"
                                 />
                                 <label
@@ -100,7 +121,7 @@ export default function Contact() {
                                 </label>
                             </div>
 
-                            <div className="group relative">
+                            <div className={`group relative ${errors.email ? 'shake' : ''}`}>
                                 <input
                                     type="email"
                                     id="email"
@@ -108,7 +129,7 @@ export default function Contact() {
                                     required
                                     value={formData.email}
                                     onChange={handleChange}
-                                    className="peer w-full bg-transparent py-4 border-b border-white/20 font-space text-lg focus:outline-none focus:border-white transition-colors placeholder-transparent"
+                                    className={`peer w-full bg-transparent py-4 border-b font-space text-lg focus:outline-none transition-colors placeholder-transparent ${errors.email ? 'border-red-400' : 'border-white/20 focus:border-white'}`}
                                     placeholder="Email"
                                 />
                                 <label
@@ -121,7 +142,7 @@ export default function Contact() {
                                 </label>
                             </div>
 
-                            <div className="group relative">
+                            <div className={`group relative ${errors.message ? 'shake' : ''}`}>
                                 <textarea
                                     id="message"
                                     name="message"
@@ -134,7 +155,7 @@ export default function Contact() {
                                         e.target.style.height = 'auto';
                                         e.target.style.height = e.target.scrollHeight + 'px';
                                     }}
-                                    className="peer w-full bg-transparent py-4 border-b border-white/20 font-space text-lg focus:outline-none focus:border-white transition-colors resize-none placeholder-transparent"
+                                    className={`peer w-full bg-transparent py-4 border-b font-space text-lg focus:outline-none transition-colors resize-none placeholder-transparent ${errors.message ? 'border-red-400' : 'border-white/20 focus:border-white'}`}
                                     placeholder="Message"
                                 />
                                 <label
@@ -149,9 +170,9 @@ export default function Contact() {
 
                             <button
                                 type="submit"
-                                className="mt-8 px-12 py-4 bg-white text-black font-space font-bold tracking-widest hover:bg-gray-200 transition-colors w-full rounded-sm uppercase"
+                                className={`mt-8 px-12 py-4 bg-white text-black font-space font-bold tracking-widest hover:bg-gray-200 transition-colors w-full rounded-sm uppercase ${submitted ? 'success-pulse' : ''}`}
                             >
-                                Send Inquiry
+                                {submitted ? 'Sent!' : 'Send Inquiry'}
                             </button>
                         </form>
                     </div>

@@ -5,14 +5,18 @@ import About from './components/About'
 import Projects from './components/Projects'
 import Contact from './components/Contact'
 import InvertCursor from './components/InvertCursor'
+import Footer from './components/Footer'
+import ScrollProgress from './components/ScrollProgress'
 import SplashScreen from './components/SplashScreen'
 import useLenis, { getLenis } from './hooks/useLocomotiveScroll'
 import useScrollReveal from './hooks/useScrollReveal'
+import useParallax from './hooks/useParallax'
 
 function App() {
     const [isLoading, setIsLoading] = useState(true)
     useLenis()
     useScrollReveal()
+    useParallax()
 
     useEffect(() => {
         const lenis = getLenis()
@@ -40,7 +44,10 @@ function App() {
             <About />
             <Projects />
             <Contact />
+            <Footer />
             <InvertCursor />
+            <ScrollProgress />
+            <div className="grain-overlay" aria-hidden="true" />
         </main>
     )
 }

@@ -11,10 +11,15 @@ export default function ProjectGrid({ projects, onProjectClick }) {
                     onClick={() => onProjectClick(index)}
                     onMouseEnter={() => setHoveredIndex(index)}
                     onMouseLeave={() => setHoveredIndex(null)}
+                    data-cursor-label="VIEW"
                     className={`group relative text-left bg-transparent border-none p-0 cursor-pointer w-full reveal reveal-delay-${(index % 3) + 1}`}
+                    style={{ transitionDelay: `${index * 0.08}s` }}
                 >
-                    {/* Image Container */}
-                    <div className="relative w-full aspect-4/5 overflow-hidden rounded-sm bg-white/5 mb-5">
+                    {/* Image Container with clip-path reveal */}
+                    <div
+                        className="relative w-full aspect-4/5 overflow-hidden rounded-sm bg-white/5 mb-5 image-reveal"
+                        style={{ transitionDelay: `${index * 0.1}s` }}
+                    >
                         <img
                             src={project.image}
                             alt={project.title}
@@ -47,7 +52,7 @@ export default function ProjectGrid({ projects, onProjectClick }) {
 
                     {/* Text Content */}
                     <div className="flex flex-col gap-1">
-                        <div className="flex items-baseline justify-between">
+                        <div>
                             <h3
                                 className="font-syne text-xl md:text-2xl font-bold tracking-tight text-white transition-opacity duration-500"
                                 style={{
@@ -56,14 +61,6 @@ export default function ProjectGrid({ projects, onProjectClick }) {
                             >
                                 {project.title}
                             </h3>
-                            <span
-                                className="font-space text-xs tracking-widest text-white/40 transition-opacity duration-500"
-                                style={{
-                                    opacity: hoveredIndex !== null && hoveredIndex !== index ? 0.2 : 1,
-                                }}
-                            >
-                                {project.year}
-                            </span>
                         </div>
                         <p
                             className="font-space text-xs tracking-widest uppercase text-white/50 transition-opacity duration-500"

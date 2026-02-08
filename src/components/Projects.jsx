@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import ProjectDetail from './ProjectDetail';
 import ProjectGrid from './ProjectGrid';
+import SplitText from './SplitText';
 
 const PROJECTS = [
   {
@@ -24,6 +25,16 @@ const PROJECTS = [
     image: '/images/projects/eewellness.jpg',
     websiteImage: '/images/project-details/eewellness.png',
     appImage: ['/images/project-details/mobile/eewellness1.jpg', '/images/project-details/mobile/eewellness2.jpg'],
+  },
+  {
+    title: 'Platz',
+    role: 'Full Stack Developer',
+    year: '2025',
+    description: 'Platz is a platform for tokenizing land into multiple tokens that can be traded over the Ethereum blockchain. It aims to democratize real estate investment by allowing fractional ownership via smart contracts.',
+    link: 'https://platz-landtokenization.vercel.app',
+    tags: ['Web3', 'Website', 'Ethereum'],
+    image: '/images/projects/platz.jpg',
+    websiteImage: '/images/project-details/platz.png',
   },
   {
     title: 'Tomsu Foundation',
@@ -56,16 +67,6 @@ const PROJECTS = [
     image: '/images/projects/precog.jpg',
     websiteImage: '/images/project-details/precog.png',
   },
-  {
-    title: 'Platz',
-    role: 'Full Stack Developer',
-    year: '2025',
-    description: 'Platz is a platform for tokenizing land into multiple tokens that can be traded over the Ethereum blockchain. It aims to democratize real estate investment by allowing fractional ownership via smart contracts.',
-    link: 'https://platz-landtokenization.vercel.app',
-    tags: ['Web3', 'Website', 'Ethereum'],
-    image: '/images/projects/platz.jpg',
-    websiteImage: '/images/project-details/platz.png',
-  },
 ];
 
 export default function Projects() {
@@ -84,30 +85,13 @@ export default function Projects() {
         data-cursor-invert
         className="relative w-full min-h-screen bg-black text-white z-10 py-12 md:py-24 px-6 md:px-12 overflow-x-clip"
       >
-        {/* Decorative Background Elements */}
-        <div 
-          className="absolute top-1/4 -right-32 w-[500px] h-[500px] rounded-full border border-white/20 pointer-events-none"
-          style={{ animation: 'spin-slow 60s linear infinite' }}
-        />
-        <div 
-          className="absolute top-1/3 left-10 w-6 h-6 opacity-50 pointer-events-none"
-          style={{ animation: 'spin-reverse-slow 15s linear infinite' }}
-        >
-             <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white -translate-y-1/2" />
-             <div className="absolute top-0 left-1/2 w-0.5 h-full bg-white -translate-x-1/2" />
-        </div>
-        <div 
-          className="absolute bottom-24 right-1/4 w-3 h-3 bg-white/50 rounded-full pointer-events-none"
-          style={{ animation: 'pulse-subtle 3s ease-in-out infinite' }}
-        />
-
         {/* Section Header */}
         <div className="max-w-7xl mx-auto w-full flex flex-col gap-10 md:gap-16 relative z-10">
           <div className="flex flex-col gap-6">
             <h2
-              className="font-syne text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.9] uppercase transition-transform duration-500 hover:skew-x-6 origin-left inline-block"
+              className="font-syne text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.9] uppercase transition-transform duration-500 hover:skew-x-6 origin-left inline-block overflow-hidden"
             >
-              My Works
+              <SplitText>My Works</SplitText>
             </h2>
             <p
               className="font-space text-base md:text-lg text-white/60 max-w-2xl leading-relaxed"

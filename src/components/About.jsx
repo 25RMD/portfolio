@@ -1,10 +1,12 @@
 import { useRef } from 'react';
+import SplitText from './SplitText';
+import CountUp from './CountUp';
 
 export default function About() {
   const containerRef = useRef(null);
 
   const skills = [
-    { category: "Frontend", items: ["React", "Three.js", "WebGL", "GSAP & Framer Motion", "Tailwind"] },
+    { category: "Frontend", items: ["React & Nextjs", "Three.js", "WebGL", "GSAP & Framer Motion", "Tailwind"] },
     { category: "Mobile", items: ["React Native", "Expo", "Swift", "Kotlin"] },
   ];
 
@@ -15,31 +17,15 @@ export default function About() {
       data-cursor-invert
       className="relative w-full min-h-screen bg-black text-white flex flex-col z-10 py-12 md:py-20 px-6 md:px-12 overflow-x-clip"
     >
-      {/* Background Elements */}
-      <div 
-        className="absolute top-20 right-20 w-64 h-64 rounded-full bg-white opacity-5 blur-[100px] pointer-events-none"
-      />
-      {/* Decorative Spinning Ring (Bottom Left) */}
-      <div 
-        className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full border border-dashed border-white/30 pointer-events-none z-0"
-        style={{ animation: 'spin-slow 40s linear infinite' }}
-      />
-      {/* Floating Geometric Shape (Top Right) */}
-      <div 
-        className="absolute top-40 right-20 pointer-events-none z-0"
-        style={{ animation: 'float 6s ease-in-out infinite' }}
-      >
-        <div className="w-24 h-24 border border-white/20 rotate-45" />
-      </div>
       
       <div className="max-w-7xl mx-auto w-full flex flex-col gap-12 md:gap-24 relative z-10">
         
         {/* Header */}
         <div>
           <h2 
-            className="font-syne text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.9] uppercase transition-transform duration-500 hover:skew-x-6 origin-left inline-block"
+            className="font-syne text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.9] uppercase transition-transform duration-500 hover:skew-x-6 origin-left inline-block overflow-hidden"
           >
-            What i do
+            <SplitText>What i do</SplitText>
           </h2>
         </div>
 
@@ -61,6 +47,25 @@ export default function About() {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Stats Row */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 reveal">
+          {[
+            { value: 6, suffix: '+', label: 'Projects' },
+            { value: 3, suffix: '+', label: 'Years Experience' },
+            { value: 2, suffix: '', label: 'Frameworks Mastered' },
+            { value: 100, suffix: '%', label: 'Passion' },
+          ].map((stat) => (
+            <div key={stat.label} className="flex flex-col gap-2 group">
+              <span className="font-syne text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tighter group-hover:text-white/90 transition-colors duration-300">
+                <CountUp end={stat.value} suffix={stat.suffix} />
+              </span>
+              <span className="font-space text-xs md:text-sm tracking-widest uppercase opacity-50 group-hover:opacity-80 transition-opacity duration-300">
+                {stat.label}
+              </span>
+            </div>
+          ))}
         </div>
 
         {/* Skills Section */}

@@ -48,10 +48,10 @@ export default function ProjectDetail({ project, onClose }) {
     return (
         <motion.div
             ref={attachRef}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ clipPath: 'circle(0% at 50% 50%)' }}
+            animate={{ clipPath: 'circle(150% at 50% 50%)' }}
+            exit={{ clipPath: 'circle(0% at 50% 50%)' }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             data-cursor-invert
             className="fixed inset-0 z-9999 bg-black text-white overflow-y-scroll overscroll-contain"
             style={{ WebkitOverflowScrolling: 'touch' }}
@@ -117,10 +117,6 @@ export default function ProjectDetail({ project, onClose }) {
                             <div>
                                 <h3 className="font-space text-xs font-bold tracking-widest opacity-50 mb-2">ROLE</h3>
                                 <p className="font-space text-lg">{project.role}</p>
-                            </div>
-                            <div>
-                                <h3 className="font-space text-xs font-bold tracking-widest opacity-50 mb-2">YEAR</h3>
-                                <p className="font-space text-lg">{project.year}</p>
                             </div>
                             {project.link && (
                                 <div>
