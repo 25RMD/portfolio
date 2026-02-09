@@ -40,7 +40,7 @@ function App() {
             <div id="home" />
             {/* Hero is fixed, spacer pushes content below */}
             <Hero isLoading={isLoading} />
-            <div className="h-screen" aria-hidden="true" />
+            <div className="h-[100svh]" aria-hidden="true" />
             <About />
             <Projects />
             <Contact />

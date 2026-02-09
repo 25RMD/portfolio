@@ -2,6 +2,8 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import AnimatedGrid from './AnimatedGrid';
 import MagneticButton from './MagneticButton';
 
+const BLOB_POINT_COUNT = 26;
+
 class Echo {
     constructor(x, y, size) {
         this.x = x;
@@ -27,6 +29,7 @@ export default function Hero({ isLoading }) {
     const textMaskRef = useRef(null);
     const textMaskInnerRef = useRef(null);
     const cursorRef = useRef(null);
+    const blobSeedsRef = useRef(Array.from({ length: BLOB_POINT_COUNT }, () => Math.random() * Math.PI * 2));
 
     // Animation state refs
     const mousePos = useRef({ x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0, y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0 });
@@ -64,6 +67,33 @@ export default function Hero({ isLoading }) {
 
     const getSpotlightSize = useCallback(() => 200, []);
 
+    const getBlobClipPath = useCallback((size, time, energy) => {
+        const points = blobSeedsRef.current;
+        const count = points.length;
+        const radius = size / 2;
+        const chaos = Math.min(energy, 3.5);
+        const wobble = 10 + chaos * 10;
+        const breathing = Math.sin(time * 0.9) * (4 + chaos * 1.2);
+        const rotation = time * 0.25 + chaos * 0.08;
+        const coords = [];
+
+        for (let i = 0; i < count; i++) {
+            const angleBase = (Math.PI * 2 * i) / count;
+            const seed = points[i];
+            const angleJitter = Math.sin(time * 0.7 + seed * 3.2) * 0.12 + Math.sin(time * 1.3 + seed) * 0.06;
+            const angle = angleBase + rotation + angleJitter;
+            const noise = Math.sin(time * 1.6 + seed * 2.1) * 0.55 + Math.sin(time * 2.9 + seed * 1.4) * 0.45;
+            const ripple = Math.sin(time * 1.1 + angleBase * 4 + seed) * (wobble * 0.35);
+            const flutter = Math.sin(time * 3.2 + seed * 4.4) * (wobble * 0.2);
+            const r = radius + breathing + noise * wobble + ripple + flutter;
+            const x = radius + Math.cos(angle) * r;
+            const y = radius + Math.sin(angle) * r;
+            coords.push(`${((x / size) * 100).toFixed(2)}% ${((y / size) * 100).toFixed(2)}%`);
+        }
+
+        return `polygon(${coords.join(', ')})`;
+    }, []);
+
     const getImageRect = useCallback(() => {
         if (!baseImageRef.current) return { left: 0, top: 0, width: 0, height: 0 };
         return baseImageRef.current.getBoundingClientRect();
@@ -74,7 +104,7 @@ export default function Hero({ isLoading }) {
         const rect = getImageRect();
         const spotlightSize = getSpotlightSize();
         const img = spotlightImageRef.current;
-        const scale = typeof window !== 'undefined' && window.innerWidth < 768 ? 1.04 : 1.20;
+        const scale = 1;
         const scaledWidth = rect.width * scale;
         const scaledHeight = rect.height * scale;
         const offsetX = (scaledWidth - rect.width) / 2;
@@ -159,7 +189,15 @@ export default function Hero({ isLoading }) {
         document.addEventListener('mouseleave', handleMouseLeave);
         document.addEventListener('mouseenter', handleMouseEnter);
 
-        const animate = () => {
+        let lastTime = 0;
+        let time = 0;
+
+        const animate = (now) => {
+            const nowMs = typeof now === 'number' ? now : performance.now();
+            if (!lastTime) lastTime = nowMs;
+            const delta = Math.min((nowMs - lastTime) / 1000, 0.05);
+            time += delta;
+            lastTime = nowMs;
             const spotlightSize = getSpotlightSize();
             const ease = 0.12;
 
@@ -191,11 +229,21 @@ export default function Hero({ isLoading }) {
                 spotlightRef.current.style.height = spotlightSize + 'px';
             }
 
+            const chaos = velocity / 12;
+            const clipPath = getBlobClipPath(spotlightSize, time, chaos);
+
+            if (spotlightRef.current) {
+                spotlightRef.current.style.clipPath = clipPath;
+                spotlightRef.current.style.webkitClipPath = clipPath;
+            }
+
             if (textMaskRef.current) {
                 textMaskRef.current.style.left = spotPos.current.x + 'px';
                 textMaskRef.current.style.top = spotPos.current.y + 'px';
                 textMaskRef.current.style.width = spotlightSize + 'px';
                 textMaskRef.current.style.height = spotlightSize + 'px';
+                textMaskRef.current.style.clipPath = clipPath;
+                textMaskRef.current.style.webkitClipPath = clipPath;
             }
             if (textMaskInnerRef.current) {
                 textMaskInnerRef.current.style.left = (-spotPos.current.x + spotlightSize / 2) + 'px';
@@ -248,9 +296,9 @@ export default function Hero({ isLoading }) {
         };
 
         if (echoImg.current.complete) {
-            animate();
+            requestAnimationFrame(animate);
         } else {
-            echoImg.current.onload = animate;
+            echoImg.current.onload = () => requestAnimationFrame(animate);
         }
 
         return () => {
@@ -362,8 +410,8 @@ export default function Hero({ isLoading }) {
                 />
             </div>
 
-            {/* Name - Top Left (always visible) */}
-            <div className="absolute top-8 left-8 md:top-12 md:left-12 z-60 pointer-events-auto">
+            {/* Name - Top Left */}
+            <div className={`absolute top-8 left-8 md:top-12 md:left-12 z-60 pointer-events-auto transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
                 <div className="relative">
                     <h1
                         className={`font-syne text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.85] transition-opacity duration-1000 ease-in-out text-[#111] ${showAltName ? 'opacity-0' : 'opacity-100'}`}

@@ -1,9 +1,14 @@
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useCallback } from 'react';
+import Lenis from 'lenis';
 import { getLenis } from '../hooks/useLocomotiveScroll';
 
 export default function ProjectDetail({ project, onClose }) {
     const cleanupRef = useRef(null);
+    const isTouch = typeof window !== 'undefined' && !window.matchMedia('(pointer: fine)').matches;
+    const overlayRef = useRef(null);
+    const contentRef = useRef(null);
+    const localLenisRef = useRef(null);
 
     const attachRef = useCallback((node) => {
         if (cleanupRef.current) {
@@ -11,6 +16,7 @@ export default function ProjectDetail({ project, onClose }) {
             cleanupRef.current = null;
         }
 
+        overlayRef.current = node;
         if (!node) return;
 
         const stopProp = (e) => e.stopPropagation();
@@ -43,6 +49,36 @@ export default function ProjectDetail({ project, onClose }) {
         };
     }, []);
 
+    useEffect(() => {
+        const overlay = overlayRef.current;
+        const content = contentRef.current;
+        if (!overlay || !content) return;
+
+        const localLenis = new Lenis({
+            wrapper: overlay,
+            content,
+            lerp: 0.1,
+            smoothWheel: true,
+            smoothTouch: true,
+            wheelMultiplier: 0.9,
+            touchMultiplier: 1.1,
+        });
+        localLenisRef.current = localLenis;
+
+        let rafId = null;
+        const raf = (time) => {
+            localLenis.raf(time);
+            rafId = requestAnimationFrame(raf);
+        };
+        rafId = requestAnimationFrame(raf);
+
+        return () => {
+            if (rafId) cancelAnimationFrame(rafId);
+            localLenis.destroy();
+            localLenisRef.current = null;
+        };
+    }, []);
+
     if (!project) return null;
 
     return (
@@ -53,7 +89,8 @@ export default function ProjectDetail({ project, onClose }) {
             exit={{ clipPath: 'circle(0% at 50% 50%)' }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             data-cursor-invert
-            className="fixed inset-0 z-9999 bg-black text-white overflow-y-scroll overscroll-contain"
+            data-cursor-block={isTouch ? true : undefined}
+            className="fixed inset-0 z-9999 bg-black text-white overflow-hidden overscroll-contain"
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             {/* Decorative Background Elements */}
@@ -68,7 +105,7 @@ export default function ProjectDetail({ project, onClose }) {
                 <div className="w-32 h-32 border border-white/20 rotate-12" />
             </div>
 
-            <div className="min-h-screen relative z-10 p-5 sm:p-8 md:p-20">
+            <div ref={contentRef} className="min-h-screen relative z-10 p-5 sm:p-8 md:p-20">
                 {/* Close Button */}
                 <button
                     onClick={onClose}
