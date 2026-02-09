@@ -19,15 +19,11 @@ export default function ProjectDetail({ project, onClose }) {
         overlayRef.current = node;
         if (!node) return;
 
-        const stopProp = (e) => e.stopPropagation();
-        node.addEventListener('wheel', stopProp, { passive: false });
-        node.addEventListener('touchstart', stopProp, { passive: false });
-        node.addEventListener('touchmove', stopProp, { passive: false });
+        const stopWheel = (e) => e.stopPropagation();
+        node.addEventListener('wheel', stopWheel, { passive: false });
 
         cleanupRef.current = () => {
-            node.removeEventListener('wheel', stopProp);
-            node.removeEventListener('touchstart', stopProp);
-            node.removeEventListener('touchmove', stopProp);
+            node.removeEventListener('wheel', stopWheel);
         };
     }, []);
 
@@ -51,6 +47,7 @@ export default function ProjectDetail({ project, onClose }) {
 
     useEffect(() => {
         if (isTouch) return;
+
         const overlay = overlayRef.current;
         const content = contentRef.current;
         if (!overlay || !content) return;
@@ -60,9 +57,7 @@ export default function ProjectDetail({ project, onClose }) {
             content,
             lerp: 0.1,
             smoothWheel: true,
-            smoothTouch: true,
             wheelMultiplier: 0.9,
-            touchMultiplier: 1.1,
         });
         localLenisRef.current = localLenis;
 
@@ -91,7 +86,7 @@ export default function ProjectDetail({ project, onClose }) {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             data-cursor-invert
             data-cursor-block={isTouch ? true : undefined}
-            className={`fixed inset-0 z-9999 bg-black text-white ${isTouch ? 'overflow-y-scroll' : 'overflow-hidden'} overscroll-contain`}
+            className={`fixed inset-0 z-9999 bg-black text-white ${isTouch ? 'overflow-y-auto' : 'overflow-hidden'} overscroll-contain`}
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             {/* Decorative Background Elements */}
