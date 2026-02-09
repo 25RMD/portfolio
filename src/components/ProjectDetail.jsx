@@ -50,6 +50,7 @@ export default function ProjectDetail({ project, onClose }) {
     }, []);
 
     useEffect(() => {
+        if (isTouch) return;
         const overlay = overlayRef.current;
         const content = contentRef.current;
         if (!overlay || !content) return;
@@ -77,7 +78,7 @@ export default function ProjectDetail({ project, onClose }) {
             localLenis.destroy();
             localLenisRef.current = null;
         };
-    }, []);
+    }, [isTouch]);
 
     if (!project) return null;
 
@@ -90,7 +91,7 @@ export default function ProjectDetail({ project, onClose }) {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             data-cursor-invert
             data-cursor-block={isTouch ? true : undefined}
-            className="fixed inset-0 z-9999 bg-black text-white overflow-hidden overscroll-contain"
+            className={`fixed inset-0 z-9999 bg-black text-white ${isTouch ? 'overflow-y-scroll' : 'overflow-hidden'} overscroll-contain`}
             style={{ WebkitOverflowScrolling: 'touch' }}
         >
             {/* Decorative Background Elements */}
