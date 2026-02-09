@@ -4,7 +4,7 @@ export default function ProjectGrid({ projects, onProjectClick }) {
     const [hoveredIndex, setHoveredIndex] = useState(null);
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8 w-full">
             {projects.map((project, index) => (
                 <button
                     key={project.title}
@@ -17,7 +17,7 @@ export default function ProjectGrid({ projects, onProjectClick }) {
                 >
                     {/* Image Container with clip-path reveal */}
                     <div
-                        className="relative w-full aspect-4/5 overflow-hidden rounded-sm bg-white/5 mb-5 image-reveal"
+                        className="relative w-full aspect-4/5 overflow-hidden rounded-sm bg-white/5 mb-3 sm:mb-5 image-reveal"
                         style={{ transitionDelay: `${index * 0.1}s` }}
                     >
                         <img
@@ -54,7 +54,7 @@ export default function ProjectGrid({ projects, onProjectClick }) {
                     <div className="flex flex-col gap-1">
                         <div>
                             <h3
-                                className="font-syne text-xl md:text-2xl font-bold tracking-tight text-white transition-opacity duration-500"
+                                className="font-syne text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-white transition-opacity duration-500"
                                 style={{
                                     opacity: hoveredIndex !== null && hoveredIndex !== index ? 0.3 : 1,
                                 }}
@@ -63,7 +63,7 @@ export default function ProjectGrid({ projects, onProjectClick }) {
                             </h3>
                         </div>
                         <p
-                            className="font-space text-xs tracking-widest uppercase text-white/50 transition-opacity duration-500"
+                            className="font-space text-[10px] sm:text-xs tracking-widest uppercase text-white/50 transition-opacity duration-500"
                             style={{
                                 opacity: hoveredIndex !== null && hoveredIndex !== index ? 0.2 : 1,
                             }}

@@ -348,31 +348,31 @@ export default function Hero({ isLoading }) {
             <div className={`absolute inset-0 z-10 pointer-events-none overflow-hidden transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
                 {/* Rotating ring */}
                 <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] md:w-[380px] md:h-[380px] rounded-full border border-black/8"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] md:w-[380px] md:h-[380px] rounded-full border border-black/8"
                     style={{ animation: 'spin-slow 25s linear infinite' }}
                 />
                 {/* Counter-rotating dashed ring */}
                 <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] md:w-[420px] md:h-[420px] rounded-full border border-dashed border-black/5"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[230px] h-[230px] sm:w-[320px] sm:h-[320px] md:w-[420px] md:h-[420px] rounded-full border border-dashed border-black/5"
                     style={{ animation: 'spin-reverse-slow 35s linear infinite' }}
                 />
                 {/* Orbiting dot */}
                 <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] md:w-[380px] md:h-[380px]"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] md:w-[380px] md:h-[380px]"
                     style={{ animation: 'spin-slow 10s linear infinite' }}
                 >
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-black/25 rounded-full" />
                 </div>
                 {/* Second orbiting dot - opposite phase */}
                 <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] md:w-[420px] md:h-[420px]"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[230px] h-[230px] sm:w-[320px] sm:h-[320px] md:w-[420px] md:h-[420px]"
                     style={{ animation: 'spin-reverse-slow 14s linear infinite' }}
                 >
                     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1 h-1 bg-black/20 rounded-full" />
                 </div>
                 {/* Rotating cross near name */}
                 <div
-                    className="absolute top-1/2 -mt-3 left-64 md:left-96 w-6 h-6 opacity-60"
+                    className="absolute top-1/2 -mt-3 left-48 sm:left-64 md:left-96 w-6 h-6 opacity-60"
                     style={{ animation: 'spin-slow 20s linear infinite' }}
                 >
                     <div className="absolute top-1/2 left-0 w-full h-0.5 bg-black -translate-y-1/2" />
@@ -385,7 +385,7 @@ export default function Hero({ isLoading }) {
                 />
                 {/* Pulsing ring */}
                 <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] md:w-[260px] md:h-[260px] rounded-full border border-black/6"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] h-[140px] sm:w-[200px] sm:h-[200px] md:w-[260px] md:h-[260px] rounded-full border border-black/6"
                     style={{ animation: 'pulse-subtle 4s ease-in-out infinite' }}
                 />
             </div>
@@ -411,16 +411,16 @@ export default function Hero({ isLoading }) {
             </div>
 
             {/* Name - Top Left */}
-            <div className={`absolute top-8 left-8 md:top-12 md:left-12 z-60 pointer-events-auto transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`absolute top-5 left-5 sm:top-8 sm:left-8 md:top-12 md:left-12 z-60 pointer-events-auto transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
                 <div className="relative">
                     <h1
-                        className={`font-syne text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.85] transition-opacity duration-1000 ease-in-out text-[#111] ${showAltName ? 'opacity-0' : 'opacity-100'}`}
+                        className={`font-syne text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.85] transition-opacity duration-1000 ease-in-out text-[#111] ${showAltName ? 'opacity-0' : 'opacity-100'}`}
                     >
                         <span className="block">DANIEL</span>
                         <span className="block mt-1">UTHO</span>
                     </h1>
                     <h1
-                        className={`font-cursive text-5xl sm:text-6xl md:text-8xl lg:text-9xl tracking-normal leading-[0.85] absolute inset-0 transition-opacity duration-1000 ease-in-out text-[#111] ${showAltName ? 'opacity-100' : 'opacity-0'}`}
+                        className={`font-cursive text-4xl sm:text-6xl md:text-8xl lg:text-9xl tracking-normal leading-[0.85] absolute inset-0 transition-opacity duration-1000 ease-in-out text-[#111] ${showAltName ? 'opacity-100' : 'opacity-0'}`}
                     >
                         <span className="block pt-2">25RMD</span>
                     </h1>
@@ -432,7 +432,7 @@ export default function Hero({ isLoading }) {
                 {/* Mobile Menu Button - Top Right (visible only on mobile) */}
                 <button
                     onClick={() => setMenuOpen(true)}
-                    className="absolute top-8 right-8 z-20 pointer-events-auto flex md:hidden flex-col justify-center items-center gap-[5px] w-10 h-10 bg-transparent border-none cursor-pointer"
+                    className="absolute top-5 right-5 sm:top-8 sm:right-8 z-20 pointer-events-auto flex md:hidden flex-col justify-center items-center gap-[5px] w-10 h-10 bg-transparent border-none cursor-pointer"
                     aria-label="Open menu"
                 >
                     <span className="block w-6 h-[2px] bg-[#111]" />
@@ -484,7 +484,7 @@ export default function Hero({ isLoading }) {
                 </div>
 
                 {/* Bottom Row - Tagline & Social Icons */}
-                <div className="absolute bottom-8 left-8 right-8 md:bottom-12 md:left-12 md:right-12 z-20 flex items-center justify-between pointer-events-auto">
+                <div className="absolute bottom-5 left-5 right-5 sm:bottom-8 sm:left-8 sm:right-8 md:bottom-12 md:left-12 md:right-12 z-20 flex items-center justify-between pointer-events-auto">
                     {/* Tagline - Bottom Left */}
                     <p
                         className="font-space text-xs tracking-[0.2em] opacity-60 font-bold text-[#111]"
@@ -493,7 +493,7 @@ export default function Hero({ isLoading }) {
                     </p>
 
                     {/* Social Icons - Bottom Right */}
-                    <div className="flex items-center gap-5 md:gap-6 cursor-pointer">
+                    <div className="flex items-center gap-3 sm:gap-5 md:gap-6 cursor-pointer">
                         {/* X (Twitter) */}
                         <MagneticButton strength={0.5}>
                         <a
@@ -590,17 +590,17 @@ export default function Hero({ isLoading }) {
                     style={{ width: '100vw', height: '100vh' }}
                 >
                     {/* Name - Top Left */}
-                    <div className="absolute top-8 left-8 md:top-12 md:left-12">
+                    <div className="absolute top-5 left-5 sm:top-8 sm:left-8 md:top-12 md:left-12">
                         <div className="relative">
                             <h1
-                                className={`font-syne text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.85] transition-opacity duration-1000 ease-in-out ${showAltName ? 'opacity-0' : 'opacity-100'}`}
+                                className={`font-syne text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.85] transition-opacity duration-1000 ease-in-out ${showAltName ? 'opacity-0' : 'opacity-100'}`}
                                 style={{ color: '#fff' }}
                             >
                                 <span className="block">DANIEL</span>
                                 <span className="block mt-1">UTHO</span>
                             </h1>
                             <h1
-                                className={`font-cursive text-6xl md:text-8xl lg:text-9xl tracking-normal leading-[0.85] absolute inset-0 transition-opacity duration-1000 ease-in-out ${showAltName ? 'opacity-100' : 'opacity-0'}`}
+                                className={`font-cursive text-4xl sm:text-6xl md:text-8xl lg:text-9xl tracking-normal leading-[0.85] absolute inset-0 transition-opacity duration-1000 ease-in-out ${showAltName ? 'opacity-100' : 'opacity-0'}`}
                                 style={{ color: '#fff' }}
                             >
                                 <span className="block pt-2">25RMD</span>

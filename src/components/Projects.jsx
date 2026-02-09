@@ -83,18 +83,18 @@ export default function Projects() {
       <section
         id="projects"
         data-cursor-invert
-        className="relative w-full min-h-screen bg-black text-white z-10 py-12 md:py-24 px-6 md:px-12 overflow-x-clip"
+        className="relative w-full min-h-screen bg-black text-white z-10 py-10 md:py-24 px-4 sm:px-6 md:px-12 overflow-x-clip"
       >
         {/* Section Header */}
-        <div className="max-w-7xl mx-auto w-full flex flex-col gap-10 md:gap-16 relative z-10">
+        <div className="max-w-7xl mx-auto w-full flex flex-col gap-6 sm:gap-10 md:gap-16 relative z-10">
           <div className="flex flex-col gap-6">
             <h2
-              className="font-syne text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.9] uppercase transition-transform duration-500 hover:skew-x-6 origin-left inline-block overflow-hidden"
+              className="font-syne text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.9] uppercase transition-transform duration-500 hover:skew-x-6 origin-left inline-block overflow-hidden"
             >
               <SplitText>My Works</SplitText>
             </h2>
             <p
-              className="font-space text-base md:text-lg text-white/60 max-w-2xl leading-relaxed"
+              className="font-space text-sm sm:text-base md:text-lg text-white/60 max-w-2xl leading-relaxed"
             >
               A curated selection of projects I've built — from web platforms and mobile apps to blockchain tools and AI-powered systems.
             </p>

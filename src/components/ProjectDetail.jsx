@@ -101,24 +101,24 @@ export default function ProjectDetail({ project, onClose }) {
                 <div className="w-32 h-32 border border-white/20 rotate-12" />
             </div>
 
-            <div ref={contentRef} className="min-h-screen relative z-10 p-5 sm:p-8 md:p-20">
+            <div ref={contentRef} className="min-h-screen relative z-10 px-4 py-5 sm:p-8 md:p-20">
                 {/* Close Button */}
                 <button
                     onClick={onClose}
-                    className="fixed top-8 right-8 md:top-12 md:right-12 z-50 font-space text-xs md:text-sm font-bold tracking-widest hover:opacity-70 transition-opacity mix-blend-difference cursor-pointer"
+                    className="fixed top-5 right-5 sm:top-8 sm:right-8 md:top-12 md:right-12 z-50 font-space text-[10px] sm:text-xs md:text-sm font-bold tracking-widest hover:opacity-70 transition-opacity mix-blend-difference cursor-pointer"
                     style={{ color: '#fff' }}
                 >
                     CLOSE
                 </button>
 
-                <div className="max-w-7xl mx-auto flex flex-col gap-12 sm:gap-16 md:gap-20 pt-12 sm:pt-20">
+                <div className="max-w-7xl mx-auto flex flex-col gap-8 sm:gap-16 md:gap-20 pt-10 sm:pt-20">
                     {/* Header */}
                     <div className="flex flex-col gap-6">
                         <motion.h1
                             initial={{ y: 100, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                            className="font-syne text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.85] uppercase wrap-break-word"
+                            className="font-syne text-2xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.85] uppercase wrap-break-word"
                         >
                             {project.title}
                         </motion.h1>
@@ -126,10 +126,10 @@ export default function ProjectDetail({ project, onClose }) {
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                            className="flex flex-wrap gap-4"
+                            className="flex flex-wrap gap-2 sm:gap-4"
                         >
                             {project.tags.map(tag => (
-                                <span key={tag} className="font-space text-xs border border-white/20 px-3 py-1 rounded-full uppercase tracking-widest opacity-60">
+                                <span key={tag} className="font-space text-[10px] sm:text-xs border border-white/20 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-widest opacity-60">
                                     {tag}
                                 </span>
                             ))}
@@ -141,24 +141,24 @@ export default function ProjectDetail({ project, onClose }) {
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24"
+                        className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 md:gap-12"
                     >
-                        <p className="font-space text-base sm:text-xl md:text-2xl leading-relaxed opacity-90">
+                        <p className="font-space text-sm sm:text-lg md:text-2xl leading-relaxed opacity-90">
                             {project.description}
                         </p>
-                        <div className="flex flex-col gap-8">
+                        <div className="flex flex-col gap-5 sm:gap-8">
                             <div>
-                                <h3 className="font-space text-xs font-bold tracking-widest opacity-50 mb-2">ROLE</h3>
-                                <p className="font-space text-lg">{project.role}</p>
+                                <h3 className="font-space text-[10px] sm:text-xs font-bold tracking-widest opacity-50 mb-1 sm:mb-2">ROLE</h3>
+                                <p className="font-space text-base sm:text-lg">{project.role}</p>
                             </div>
                             {project.link && (
                                 <div>
-                                    <h3 className="font-space text-xs font-bold tracking-widest opacity-50 mb-2">LINK</h3>
+                                    <h3 className="font-space text-[10px] sm:text-xs font-bold tracking-widest opacity-50 mb-1 sm:mb-2">LINK</h3>
                                     <a
                                         href={project.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="font-space text-lg border-b border-white hover:opacity-70 transition-opacity"
+                                        className="font-space text-base sm:text-lg border-b border-white hover:opacity-70 transition-opacity"
                                     >
                                         Visit Site
                                     </a>
@@ -168,16 +168,16 @@ export default function ProjectDetail({ project, onClose }) {
                     </motion.div>
 
                     {/* Screenshots */}
-                    <div className="flex flex-col gap-12 sm:gap-16 md:gap-24">
+                    <div className="flex flex-col gap-8 sm:gap-16 md:gap-24">
                         {/* Website Section */}
                         {project.websiteImage && (
                             <motion.div
                                 initial={{ y: 50, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                className="flex flex-col gap-8"
+                                className="flex flex-col gap-4 sm:gap-8"
                             >
-                                <h2 className="font-syne text-2xl sm:text-3xl md:text-4xl font-bold">Web Platform</h2>
+                                <h2 className="font-syne text-xl sm:text-3xl md:text-4xl font-bold">Web Platform</h2>
                                 <div className="w-full aspect-video bg-white/5 rounded-lg overflow-hidden relative group border border-white/20">
                                     <img
                                         src={project.websiteImage}
@@ -198,12 +198,12 @@ export default function ProjectDetail({ project, onClose }) {
                                 initial={{ y: 50, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ duration: 0.8, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                                className="flex flex-col gap-8"
+                                className="flex flex-col gap-4 sm:gap-8"
                             >
-                                <h2 className="font-syne text-2xl sm:text-3xl md:text-4xl font-bold">Mobile Application</h2>
-                                <div className="flex justify-center gap-4 sm:gap-8 flex-wrap">
+                                <h2 className="font-syne text-xl sm:text-3xl md:text-4xl font-bold">Mobile Application</h2>
+                                <div className="flex justify-center gap-3 sm:gap-8 flex-wrap">
                                     {(Array.isArray(project.appImage) ? project.appImage : [project.appImage]).map((src, i) => (
-                                        <div key={i} className="w-full max-w-[200px] sm:max-w-[280px] md:max-w-sm aspect-[9/19.5] bg-white/5 rounded-4xl overflow-hidden relative group border border-white/20 shadow-2xl">
+                                        <div key={i} className="w-full max-w-[160px] sm:max-w-[280px] md:max-w-sm aspect-[9/19.5] bg-white/5 rounded-3xl sm:rounded-4xl overflow-hidden relative group border border-white/20 shadow-2xl">
                                             <img
                                                 src={src}
                                                 alt={`${project.title} App ${i + 1}`}

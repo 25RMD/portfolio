@@ -45,18 +45,18 @@ export default function Contact() {
         <section
             id="contact"
             data-cursor-invert
-            className="relative w-full min-h-screen bg-black text-white z-10 pt-12 md:pt-24 pb-12 px-6 md:px-12 overflow-x-clip"
+            className="relative w-full min-h-screen bg-black text-white z-10 pt-10 md:pt-24 pb-10 sm:pb-12 px-4 sm:px-6 md:px-12 overflow-x-clip"
         >
             {/* Background Animations */}
             <div className="absolute inset-0 z-0 opacity-40">
                 <AnimatedGrid color="255, 255, 255" />
             </div>
 
-            <div className="max-w-7xl mx-auto w-full flex flex-col gap-10 md:gap-16 relative z-10">
+            <div className="max-w-7xl mx-auto w-full flex flex-col gap-6 sm:gap-10 md:gap-16 relative z-10">
                 {/* Section Header */}
-                <div className="flex items-end justify-between gap-8">
+                <div className="flex items-end justify-between gap-6 sm:gap-8">
                     <h2
-                        className="font-syne text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.9] uppercase transition-transform duration-500 hover:skew-x-6 origin-left inline-block overflow-hidden"
+                        className="font-syne text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.9] uppercase transition-transform duration-500 hover:skew-x-6 origin-left inline-block overflow-hidden"
                     >
                         <SplitText>Let's Create</SplitText>
                     </h2>
@@ -65,10 +65,10 @@ export default function Contact() {
                 <div className="w-full h-px bg-white/10 reveal-line" />
 
                 {/* Content */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-start">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 md:gap-24 items-start">
                     {/* Left - Description + Email */}
                     <div className="flex flex-col gap-8 reveal reveal-delay-1">
-                        <p className="font-space text-lg md:text-xl leading-relaxed opacity-70">
+                        <p className="font-space text-sm sm:text-lg md:text-xl leading-relaxed opacity-70">
                             Have a project in mind? Let's build something extraordinary together.
                             I'm currently available for freelance work and collaborations.
                         </p>
@@ -76,7 +76,7 @@ export default function Contact() {
                             <p className="font-space text-xs font-bold tracking-widest opacity-40">DIRECT EMAIL</p>
                             <a
                                 href="mailto:19thdanielutho@gmail.com"
-                                className="font-syne text-lg sm:text-2xl md:text-3xl font-bold hover:opacity-70 transition-opacity break-all sm:break-normal"
+                                className="font-syne text-base sm:text-2xl md:text-3xl font-bold hover:opacity-70 transition-opacity break-all sm:break-normal"
                             >
                                 19thdanielutho@gmail.com
                             </a>
@@ -85,7 +85,7 @@ export default function Contact() {
 
                     {/* Right - Form */}
                     <div className="reveal reveal-delay-2">
-                        <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-12">
+                        <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-8 sm:gap-12">
                             <div className={`group relative ${errors.name ? 'shake' : ''}`}>
                                 <input
                                     type="text"
@@ -156,7 +156,7 @@ export default function Contact() {
 
                             <button
                                 type="submit"
-                                className={`mt-8 px-12 py-4 bg-white text-black font-space font-bold tracking-widest hover:bg-gray-200 transition-colors w-full rounded-sm uppercase ${submitted ? 'success-pulse' : ''}`}
+                                className={`mt-4 sm:mt-8 px-8 sm:px-12 py-3 sm:py-4 bg-white text-black font-space text-sm sm:text-base font-bold tracking-widest hover:bg-gray-200 transition-colors w-full rounded-sm uppercase ${submitted ? 'success-pulse' : ''}`}
                             >
                                 {submitted ? 'Sent!' : 'Send Inquiry'}
                             </button>
