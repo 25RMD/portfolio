@@ -1,93 +1,49 @@
-import { motion } from 'framer-motion';
-import { useEffect, useRef, useCallback } from 'react';
-import Lenis from 'lenis';
+import { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getProjectBySlug } from '../data/projects';
 import { getLenis } from '../hooks/useLocomotiveScroll';
 
-export default function ProjectDetail({ project, onClose }) {
-    const cleanupRef = useRef(null);
-    const isTouch = typeof window !== 'undefined' && !window.matchMedia('(pointer: fine)').matches;
-    const overlayRef = useRef(null);
-    const contentRef = useRef(null);
-    const localLenisRef = useRef(null);
+export default function ProjectDetailPage() {
+    const { slug } = useParams();
+    const navigate = useNavigate();
+    const project = getProjectBySlug(slug);
 
-    const attachRef = useCallback((node) => {
-        if (cleanupRef.current) {
-            cleanupRef.current();
-            cleanupRef.current = null;
-        }
-
-        overlayRef.current = node;
-        if (!node) return;
-
-        const stopWheel = (e) => e.stopPropagation();
-        node.addEventListener('wheel', stopWheel, { passive: false });
-
-        cleanupRef.current = () => {
-            node.removeEventListener('wheel', stopWheel);
-        };
-    }, []);
+    const handleClose = () => {
+        sessionStorage.removeItem('homeScrollY');
+        sessionStorage.setItem('homeScrollTarget', 'projects');
+        navigate({ pathname: '/', hash: '#projects' });
+    };
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+
+        // Reset Lenis scroll position so it doesn't fight with native scroll
         const lenis = getLenis();
-        lenis?.stop();
+        if (lenis) {
+            lenis.scrollTo(0, { immediate: true });
+        }
+    }, [slug]);
 
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.overflow = 'hidden';
-
-        return () => {
-            document.documentElement.style.overflow = '';
-            document.body.style.overflow = '';
-            lenis?.start();
-            if (cleanupRef.current) {
-                cleanupRef.current();
-                cleanupRef.current = null;
-            }
-        };
-    }, []);
-
-    useEffect(() => {
-        if (isTouch) return;
-
-        const overlay = overlayRef.current;
-        const content = contentRef.current;
-        if (!overlay || !content) return;
-
-        const localLenis = new Lenis({
-            wrapper: overlay,
-            content,
-            lerp: 0.1,
-            smoothWheel: true,
-            wheelMultiplier: 0.9,
-        });
-        localLenisRef.current = localLenis;
-
-        let rafId = null;
-        const raf = (time) => {
-            localLenis.raf(time);
-            rafId = requestAnimationFrame(raf);
-        };
-        rafId = requestAnimationFrame(raf);
-
-        return () => {
-            if (rafId) cancelAnimationFrame(rafId);
-            localLenis.destroy();
-            localLenisRef.current = null;
-        };
-    }, [isTouch]);
-
-    if (!project) return null;
+    if (!project) {
+        return (
+            <div className="min-h-screen bg-black text-white flex items-center justify-center">
+                <div className="text-center">
+                    <h1 className="font-syne text-4xl font-bold mb-4">Project not found</h1>
+                    <button
+                        onClick={handleClose}
+                        className="font-space text-sm tracking-widest uppercase opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+                    >
+                        &larr; Back to Home
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <motion.div
-            ref={attachRef}
-            initial={{ clipPath: 'circle(0% at 50% 50%)' }}
-            animate={{ clipPath: 'circle(150% at 50% 50%)' }}
-            exit={{ clipPath: 'circle(0% at 50% 50%)' }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        <div
+            className="min-h-screen bg-black text-white relative"
             data-cursor-invert
-            data-cursor-block={isTouch ? true : undefined}
-            className={`fixed inset-0 z-9999 bg-black text-white ${isTouch ? 'overflow-y-auto' : 'overflow-hidden'} overscroll-contain`}
-            style={{ WebkitOverflowScrolling: 'touch' }}
         >
             {/* Decorative Background Elements */}
             <div
@@ -101,10 +57,10 @@ export default function ProjectDetail({ project, onClose }) {
                 <div className="w-32 h-32 border border-white/20 rotate-12" />
             </div>
 
-            <div ref={contentRef} className="min-h-screen relative z-10 px-4 py-5 sm:p-8 md:p-20">
-                {/* Close Button */}
+            <div className="relative z-10 px-4 py-5 sm:p-8 md:p-20">
+                {/* Back Button */}
                 <button
-                    onClick={onClose}
+                    onClick={handleClose}
                     className="fixed top-5 right-5 sm:top-8 sm:right-8 md:top-12 md:right-12 z-50 font-space text-[10px] sm:text-xs md:text-sm font-bold tracking-widest hover:opacity-70 transition-opacity mix-blend-difference cursor-pointer"
                     style={{ color: '#fff' }}
                 >
@@ -114,35 +70,20 @@ export default function ProjectDetail({ project, onClose }) {
                 <div className="max-w-7xl mx-auto flex flex-col gap-8 sm:gap-16 md:gap-20 pt-10 sm:pt-20">
                     {/* Header */}
                     <div className="flex flex-col gap-6">
-                        <motion.h1
-                            initial={{ y: 100, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                            className="font-syne text-2xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.85] uppercase wrap-break-word"
-                        >
+                        <h1 className="font-syne text-2xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.85] uppercase wrap-break-word">
                             {project.title}
-                        </motion.h1>
-                        <motion.div
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                            className="flex flex-wrap gap-2 sm:gap-4"
-                        >
+                        </h1>
+                        <div className="flex flex-wrap gap-2 sm:gap-4">
                             {project.tags.map(tag => (
                                 <span key={tag} className="font-space text-[10px] sm:text-xs border border-white/20 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-widest opacity-60">
                                     {tag}
                                 </span>
                             ))}
-                        </motion.div>
+                        </div>
                     </div>
 
                     {/* Description */}
-                    <motion.div
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 md:gap-12"
-                    >
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 md:gap-12">
                         <p className="font-space text-sm sm:text-lg md:text-2xl leading-relaxed opacity-90">
                             {project.description}
                         </p>
@@ -165,18 +106,13 @@ export default function ProjectDetail({ project, onClose }) {
                                 </div>
                             )}
                         </div>
-                    </motion.div>
+                    </div>
 
                     {/* Screenshots */}
                     <div className="flex flex-col gap-8 sm:gap-16 md:gap-24">
                         {/* Website Section */}
                         {project.websiteImage && (
-                            <motion.div
-                                initial={{ y: 50, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                className="flex flex-col gap-4 sm:gap-8"
-                            >
+                            <div className="flex flex-col gap-4 sm:gap-8">
                                 <h2 className="font-syne text-xl sm:text-3xl md:text-4xl font-bold">Web Platform</h2>
                                 <div className="w-full aspect-video bg-white/5 rounded-lg overflow-hidden relative group border border-white/20">
                                     <img
@@ -189,17 +125,12 @@ export default function ProjectDetail({ project, onClose }) {
                                         <span className="font-space opacity-30">Website Screenshot</span>
                                     </div>
                                 </div>
-                            </motion.div>
+                            </div>
                         )}
 
                         {/* Mobile App Section */}
                         {project.appImage && (
-                            <motion.div
-                                initial={{ y: 50, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                transition={{ duration: 0.8, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                                className="flex flex-col gap-4 sm:gap-8"
-                            >
+                            <div className="flex flex-col gap-4 sm:gap-8">
                                 <h2 className="font-syne text-xl sm:text-3xl md:text-4xl font-bold">Mobile Application</h2>
                                 <div className="flex justify-center gap-3 sm:gap-8 flex-wrap">
                                     {(Array.isArray(project.appImage) ? project.appImage : [project.appImage]).map((src, i) => (
@@ -216,11 +147,11 @@ export default function ProjectDetail({ project, onClose }) {
                                         </div>
                                     ))}
                                 </div>
-                            </motion.div>
+                            </div>
                         )}
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </div>
     );
 }

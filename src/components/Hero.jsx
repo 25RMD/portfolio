@@ -29,7 +29,12 @@ export default function Hero({ isLoading }) {
     const textMaskRef = useRef(null);
     const textMaskInnerRef = useRef(null);
     const cursorRef = useRef(null);
-    const blobSeedsRef = useRef(Array.from({ length: BLOB_POINT_COUNT }, () => Math.random() * Math.PI * 2));
+    const blobSeedsRef = useRef(
+        Array.from(
+            { length: BLOB_POINT_COUNT },
+            (_, i) => (((i * 9301 + 49297) % 233280) / 233280) * Math.PI * 2
+        )
+    );
 
     // Animation state refs
     const mousePos = useRef({ x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0, y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0 });
@@ -185,7 +190,7 @@ export default function Hero({ isLoading }) {
 
         document.addEventListener('mousemove', handleMouseMove);
         document.addEventListener('touchstart', handleTouchStart, { passive: true });
-        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+        document.addEventListener('touchmove', handleTouchMove, { passive: isTouch });
         document.addEventListener('mouseleave', handleMouseLeave);
         document.addEventListener('mouseenter', handleMouseEnter);
 
@@ -313,7 +318,7 @@ export default function Hero({ isLoading }) {
                 cancelAnimationFrame(animationId.current);
             }
         };
-    }, [getSpotlightSize, getImageRect, updateSpotlightImagePosition]);
+    }, [getBlobClipPath, getSpotlightSize, getImageRect, updateSpotlightImagePosition, isTouch]);
 
     return (
         <div

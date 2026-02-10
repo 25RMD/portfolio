@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
+const MotionDiv = motion.div;
+const MotionSpan = motion.span;
+
 // Lenis-style lerp for smooth interpolation
 function lerp(start, end, factor) {
     return start + (end - start) * factor;
@@ -55,7 +58,7 @@ export default function SplashScreen({ onComplete }) {
     }, [handleComplete]);
 
     return (
-        <motion.div
+        <MotionDiv
             className="fixed inset-0 z-9999 bg-black text-white flex items-center justify-center overflow-hidden"
             initial={{ opacity: 1 }}
             exit={{ 
@@ -65,23 +68,23 @@ export default function SplashScreen({ onComplete }) {
             data-cursor-invert
         >
             <div className="overflow-hidden flex items-baseline">
-                <motion.span 
+                <MotionSpan 
                     className="font-syne text-[20vw] md:text-[15vw] font-extrabold leading-none tracking-tighter"
                     initial={{ y: "100%" }}
                     animate={{ y: 0 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 >
                     {displayCount.toString().padStart(2, '0')}
-                </motion.span>
-                <motion.span 
+                </MotionSpan>
+                <MotionSpan 
                     className="font-syne text-4xl md:text-6xl font-light ml-2 opacity-40"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 0.4 }}
                     transition={{ delay: 0.5 }}
                 >
                     %
-                </motion.span>
+                </MotionSpan>
             </div>
-        </motion.div>
+        </MotionDiv>
     );
 }

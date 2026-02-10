@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export default function useScrollReveal() {
+export default function useScrollReveal(depKey) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -13,9 +13,20 @@ export default function useScrollReveal() {
       { threshold: 0.1 }
     );
 
-    const elements = document.querySelectorAll('.reveal, .reveal-line');
-    elements.forEach((el) => observer.observe(el));
+    const observeAll = () => {
+      const elements = document.querySelectorAll('.reveal:not(.is-inview), .reveal-line:not(.is-inview)');
+      elements.forEach((el) => observer.observe(el));
+    };
 
-    return () => observer.disconnect();
-  }, []);
+    observeAll();
+
+    // Watch for new elements added to the DOM (e.g. after route change)
+    const mo = new MutationObserver(observeAll);
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      mo.disconnect();
+    };
+  }, [depKey]);
 }
